@@ -1,21 +1,54 @@
-﻿namespace ControladorManual.Maui.Models
+﻿using System.Collections.Specialized;
+using System.ComponentModel;
+
+namespace ControladorManual.Maui.Models
 {
-    public class Contador //clase de coneto 
+    public class Contador : INotifyPropertyChanged
     {
         private int _conteo;
-        public int Conteo => _conteo; //propiedad de solo lectura
+        private int _incremento;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public int Conteo
+        {
+            get => _conteo;
+            set {
+                if (_conteo != value)
+                {
+                    _conteo = value;
+                    OnPropertyChanged(nameof(Conteo));
+                }
+            }
+        }
+        public int Incremento
+        {
+            get => _incremento;
+            set 
+            {
+                if (Incremento != value)
+                {
+                    _incremento = value;
+                    OnPropertyChanged(nameof(Incremento));
+                }
+            }
+        }
         public Contador()
         {
-
-            _conteo = 0; 
+            Conteo = 0;
+            Incremento = 1;
         }
         public void Contar()
         {
-            _conteo++;
+            Conteo += Incremento;
         }
         public void Reiniciar()
         {
-            _conteo = 0;
+            Conteo = 0;
+        }
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
